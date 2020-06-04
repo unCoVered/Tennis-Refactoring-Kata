@@ -1,131 +1,63 @@
 package tennis
 
 
+class TennisGame2(val player1Name: String, val player2Name: String) extends TennisGame {
 
-class TennisGame2 (val player1Name : String, val player2Name : String) extends TennisGame {
+    var p1Point = 0
+    var p2Point = 0
 
-    var P1point = 0
-    var P2point  = 0
-
-    var P1res = ""
-    var P2res = ""
-
-    def calculateScore() : String = {
+    def calculateScore(): String = {
         var score = ""
-        if (P1point == P2point && P1point < 4)
-        {
-            if (P1point==0)
-                score = "Love"
-            if (P1point==1)
-                score = "Fifteen"
-            if (P1point==2)
-                score = "Thirty"
-            score += "-All"
-        }
-        if (P1point==P2point && P1point>=3)
-            score = "Deuce"
-
-        if (P1point > 0 && P2point==0)
-        {
-            if (P1point==1)
-                P1res = "Fifteen"
-            if (P1point==2)
-                P1res = "Thirty"
-            if (P1point==3)
-                P1res = "Forty"
-
-            P2res = "Love"
-            score = P1res + "-" + P2res
-        }
-        if (P2point > 0 && P1point==0)
-        {
-            if (P2point==1)
-                P2res = "Fifteen"
-            if (P2point==2)
-                P2res = "Thirty"
-            if (P2point==3)
-                P2res = "Forty"
-
-            P1res = "Love"
-            score = P1res + "-" + P2res
+        if (p1Point == p2Point) {
+            score = p1Point match {
+                case 0 => "Love-All"
+                case 1 => "Fifteen-All"
+                case 2 => "Thirty-All"
+                case _ => "Deuce"
+            }
         }
 
-        if (P1point>P2point && P1point < 4)
-        {
-            if (P1point==2)
-                P1res="Thirty"
-            if (P1point==3)
-                P1res="Forty"
-            if (P2point==1)
-                P2res="Fifteen"
-            if (P2point==2)
-                P2res="Thirty"
-            score = P1res + "-" + P2res
-        }
-        if (P2point>P1point && P2point < 4)
-        {
-            if (P2point==2)
-                P2res="Thirty"
-            if (P2point==3)
-                P2res="Forty"
-            if (P1point==1)
-                P1res="Fifteen"
-            if (P1point==2)
-                P1res="Thirty"
-            score = P1res + "-" + P2res
+        if (p1Point >= 4 && p2Point >= 0 && (p1Point - p2Point) >= 2) score = "Win for player1"
+        else if (p1Point > p2Point) {
+            score = (p1Point,p2Point) match {
+                case (1,0) => "Fifteen-Love"
+                case (2,0) => "Thirty-Love"
+                case (3,0) => "Forty-Love"
+                case (2,1) => "Thirty-Fifteen"
+                case (3,1) => "Forty-Fifteen"
+                case (3,2) => "Forty-Thirty"
+                case (_,_) if p2Point >= 3 => "Advantage player1"
+            }
         }
 
-        if (P1point > P2point && P2point >= 3)
-        {
-            score = "Advantage player1"
+        if (p2Point >= 4 && p1Point >= 0 && (p2Point - p1Point) >= 2) score = "Win for player2"
+        else if (p2Point > p1Point) {
+            score = (p1Point,p2Point) match {
+                case (0,1) => "Love-Fifteen"
+                case (0,2) => "Love-Thirty"
+                case (0,3) => "Love-Forty"
+                case (1,2) => "Fifteen-Thirty"
+                case (1,3) => "Fifteen-Forty"
+                case (2,3) => "Thirty-Forty"
+                case (_,_) if p1Point >= 3 => "Advantage player2"
+            }
         }
 
-        if (P2point > P1point && P1point >= 3)
-        {
-            score = "Advantage player2"
-        }
-
-        if (P1point>=4 && P2point>=0 && (P1point-P2point)>=2)
-        {
-            score = "Win for player1"
-        }
-        if (P2point>=4 && P1point>=0 && (P2point-P1point)>=2)
-        {
-            score = "Win for player2"
-        }
-        return score
+        score
     }
 
-    def SetP1Score(number : Int) {
-
-        for (i <- 0 until number by 1)
-        {
-            P1Score()
-        }
-
-    }
-
-    def SetP2Score(number : Int){
-
-      for (i <- 0 until number by 1)
-        {
-            P2Score()
-        }
-
-    }
-
-    def P1Score(){
-        P1point += 1
-    }
-
-    def P2Score(){
-        P2point +=1
-    }
-
-    def wonPoint(player : String) {
+    def wonPoint(player: String) {
         if (player == "player1")
-            P1Score()
+            p1Score()
         else
-            P2Score()
+            p2Score()
+    }
+
+    def p1Score() {
+        p1Point += 1
+    }
+
+    def p2Score() {
+        p2Point += 1
     }
 }
