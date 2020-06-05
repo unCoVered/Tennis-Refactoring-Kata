@@ -8,6 +8,8 @@ class TennisGame2(val player1Name: String, val player2Name: String) extends Tenn
 
     def calculateScore(): String = {
         var score = ""
+
+        // Same result
         if (p1Point == p2Point) {
             score = p1Point match {
                 case 0 => "Love-All"
@@ -17,6 +19,7 @@ class TennisGame2(val player1Name: String, val player2Name: String) extends Tenn
             }
         }
 
+        // p1 > p2
         if (p1Point >= 4 && p2Point >= 0 && (p1Point - p2Point) >= 2) score = "Win for player1"
         else if (p1Point > p2Point) {
             score = (p1Point,p2Point) match {
@@ -30,6 +33,7 @@ class TennisGame2(val player1Name: String, val player2Name: String) extends Tenn
             }
         }
 
+        // p2 > p1
         if (p2Point >= 4 && p1Point >= 0 && (p2Point - p1Point) >= 2) score = "Win for player2"
         else if (p2Point > p1Point) {
             score = (p1Point,p2Point) match {

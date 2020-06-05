@@ -1,33 +1,38 @@
 package tennis
 
 
-class TennisGame3 (val p1N : String, val p2N : String) extends TennisGame {
+class TennisGame3(val player1Name: String, val player2Name: String) extends TennisGame {
 
-  var p2 : Int = 0
-  var p1 : Int = 0
+    var points1: Int = 0
+    var points2: Int = 0
 
+    def calculateScore(): String = {
+        if (points1 < 4 && points2 < 4 && !isDeuce(points1, points2)) {
+            val pointsStrings = Array("Love", "Fifteen", "Thirty", "Forty")
 
-  def calculateScore() : String = {
-    var s : String = ""
-    if (p1 < 4 && p2 < 4 && !(p1 + p2 == 6)) {
-      val p  =  Array("Love", "Fifteen", "Thirty", "Forty")
-      s = p(p1)
-      if (p1 == p2) s + "-All"  else  s + "-" + p(p2)
-    } else {
-      if (p1 == p2) "Deuce"
-      else  {
-        s = if (p1 > p2)  p1N else p2N
-        if ((p1-p2)*(p1-p2) == 1) "Advantage " + s  else "Win for " + s
-      }
+            if (points1 == points2) pointsStrings(points1) + "-All"
+            else pointsStrings(points1) + "-" + pointsStrings(points2)
+        }
+        else {
+            if (points1 == points2) "Deuce"
+            else {
+                val ahead_player = if (points1 > points2) player1Name else player2Name
+                if (pointsDiference(points1, points2) == 1) "Advantage " + ahead_player
+                else "Win for " + ahead_player
+            }
+        }
     }
-  }
 
-  def wonPoint(playerName : String) {
-    if (playerName == "player1")
-      this.p1 += 1
-    else
-      this.p2 += 1
+    def wonPoint(playerName: String) {
+        if (playerName == "player1") this.points1 += 1
+        else this.points2 += 1
+    }
 
-  }
+    def isDeuce(points1: Int, points2: Int): Boolean = {
+        points1 + points2 == 6
+    }
 
+    def pointsDiference(points1: Int, points2: Int): Int = {
+        (points1 - points2).abs
+    }
 }
